@@ -1,0 +1,41 @@
+name: Client Side Tools and Coverage
+on:
+  push:
+    branches: [ '*' ]
+  pull_request:
+    branches: [ '*' ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          npm install
+          npm install -g ts-mocha
+          npm install --save-dev typescript ts-node @types/node
+          npm install --save-dev nyc @istanbuljs/nyc-config-typescript
+          npm install --save-dev mocha @types/mocha chai @types/chai
+          npm install --save-dev source-map-support
+          npm install --save-dev mocha-lcov-reporter
+
+      - name: Run tests and collect coverage
+        run: |
+          npx nyc --reporter=lcov --reporter=text npm test
+        continue-on-error: true
+
+      - name: Upload coverage report to Codacy
+        env:
+            CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        run: |
+            bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r coverage/lcov.info
+        continue-on-error: true
