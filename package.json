@@ -1,0 +1,24 @@
+{
+    "name": "my-ts-app",
+    "version": "1.0.0",
+    "description": "TypeScript testing example",
+    "main": "dist/index.js",
+    "scripts": {
+        "test": "ts-mocha -p tsconfig.json 'test/**/*.spec.ts'",
+        "coverage": "nyc npm test",
+        "build": "tsc",
+        "start": "ts-node src/index.ts"
+    },
+    "devDependencies": {
+        "@istanbuljs/nyc-config-typescript": "^1.0.2",
+        "@types/chai": "^4.3.11",
+        "@types/mocha": "^10.0.6",
+        "@types/node": "^20.10.5",
+        "chai": "^4.3.10",
+        "mocha": "^10.2.0",
+        "nyc": "^15.1.0",
+        "ts-mocha": "^10.0.0",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.3.3"
+    }
+}
